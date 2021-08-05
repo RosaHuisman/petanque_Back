@@ -106,6 +106,24 @@ app.post('/login', (req, res) => {
   }
 });
 
+app.get('/checkToken', authorizationMiddleware, (req, res) => {
+  // authentication
+  const user = db.users.find(user => user.id === req.user.userId);
+
+  // http response
+  if (user) {
+    console.log('<< 200', user.username);
+    res.json({ 
+      logged: true, 
+      pseudo: user.username,
+    });
+  }
+  else {
+    console.log('<< 401 UNAUTHORIZED');
+    res.sendStatus(401);
+  }
+});
+
 // Favorites recipes : GET /favorites
 app.get('/favorites', authorizationMiddleware, (req, res) => {
   console.log('>> GET /favorites', req.user);

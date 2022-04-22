@@ -4,8 +4,6 @@ const bodyParser = require('body-parser');
 const jwt = require('express-jwt');
 const jsonwebtoken = require('jsonwebtoken');
 
-// recipes data
-const recipes = require('./list.json');
 
 // vars
 const app = express();
@@ -16,28 +14,10 @@ const jwtSecret = 'OurSuperLongRandomSecretToSignOurJWTgre5ezg4jyt5j4ui64gn56bd4
 const db = {
   users: [
     {
-      id: 32,
-      password: 'jennifer',
-      username: 'John',
-      color: '#c23616',
-      favorites: [21453, 462],
-      email: 'bouclierman@herocorp.io',
-    },
-    {
-      id: 55,
-      password: 'fructis',
-      username: 'Burt',
-      color: '#009432',
-      favorites: [8965, 11],
-      email: 'acidman@herocorp.io',
-    },
-    {
-      id: 123,
-      password: 'pingpong',
-      username: 'Karin',
-      color: '#f0f',
-      favorites: [8762],
-      email: 'captain.sportsextremes@herocorp.io',
+      id: 1,
+      password: 'rosa',
+      username: 'Rosa',
+      email: 'rosahuisman@hotmail.fr',
     }, 
   ]
 };
@@ -49,6 +29,7 @@ app.use(bodyParser.json());
 // cors
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization');
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
 
@@ -70,13 +51,6 @@ app.get('/', (req, res) => {
   console.log('>> GET /');
   res.sendFile( __dirname + '/index.html');
 });
-
-// Liste des recettes : GET /recipes
-app.get('/recipes', (req, res) => {
-  console.log('>> GET /recipes');
-  res.json(recipes);
-});
-
 
 // Login : POST /login
 app.post('/login', (req, res) => {
@@ -122,17 +96,6 @@ app.get('/checkToken', authorizationMiddleware, (req, res) => {
     console.log('<< 401 UNAUTHORIZED');
     res.sendStatus(401);
   }
-});
-
-// Favorites recipes : GET /favorites
-app.get('/favorites', authorizationMiddleware, (req, res) => {
-  console.log('>> GET /favorites', req.user);
-
-  const user = db.users.find(user => user.id === req.user.userId);
-  console.log('<< 200');
-  res.json({ 
-    favorites: recipes.filter((recipe) => user.favorites.includes(recipe.id)), 
-  });
 });
 
 // Error middleware

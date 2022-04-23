@@ -1,114 +1,51 @@
-// librairies
+require('dotenv').config();
+
 const express = require('express');
-const bodyParser = require('body-parser');
-const jwt = require('express-jwt');
-const jsonwebtoken = require('jsonwebtoken');
+const router = require('./app/router');
+const morgan = require('morgan');
+const cors = require('cors');
+const sanitizer = require('sanitizer');
+const multer = require('multer');
 
-
-// vars
 const app = express();
-const port = 3001;
-const jwtSecret = 'OurSuperLongRandomSecretToSignOurJWTgre5ezg4jyt5j4ui64gn56bd4sfs5qe4erg5t5yjh46yu6knsw4q';
 
-// users data
-const db = {
-  users: [
-    {
-      id: 1,
-      password: 'rosa',
-      username: 'Rosa',
-      email: 'rosahuisman@hotmail.fr',
-    }, 
-  ]
-};
+// '*' signifie "tout le monde peut passer"
+// ATTENNIO : c'est valable le temps du dev, mais il faudra mettre une valeur plus précise pour le passage en prod
+app.use( cors('*') );
 
-/* Middlewares */
-// parse request body
-app.use(bodyParser.json());
+app.use( morgan('dev') );
 
-// cors
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+// on utilise un expres.static pour servir tous les fichiers qui sont dans le dossier public
+app.use( express.static('public') );
 
-  // response to preflight request
-  if (req.method === 'OPTIONS') {
-    res.sendStatus(200);
-  }
-  else {
+
+// on oublie pas les MW pour les body !
+app.use(express.urlencoded({extended: true}));
+const bodyParser = multer();
+// on utlise .none() pour dire qu'on attends pas de fichier, uniquement des inputs "classiques" !
+app.use( bodyParser.none() );
+
+// on assainit tout le body, avant de le passer au rouet
+app.use( (req, res, next) => {
+    if (req.body) {
+        for (const prop in req.body) {
+            req.body[prop] = sanitizer.escape(req.body[prop]);
+        }
+    }
     next();
-  }
 });
 
-// prepare authorization middleware
-const authorizationMiddleware = jwt({ secret: jwtSecret, algorithms: ['HS256'] });
+app.use(router);
 
-/* Routes */
-// Page d'accueil du serveur : GET /
-app.get('/', (req, res) => {
-  console.log('>> GET /');
-  res.sendFile( __dirname + '/index.html');
-});
-
-// Login : POST /login
-app.post('/login', (req, res) => {
-  console.log('>> POST /login', req.body);
-  const { email, password } = req.body;
-
-  // authentication
-  const user = db.users.find(user => user.email === email && user.password === password);
-
-  // http response
-  if (user) {
-    const jwtContent = { userId: user.id };
-    const jwtOptions = { 
-      algorithm: 'HS256', 
-      expiresIn: '3h' 
-    };
-    console.log('<< 200', user.username);
-    res.json({ 
-      logged: true, 
-      pseudo: user.username,
-      token: jsonwebtoken.sign(jwtContent, jwtSecret, jwtOptions),
-    });
-  }
-  else {
-    console.log('<< 401 UNAUTHORIZED');
-    res.sendStatus(401);
-  }
-});
-
-app.get('/checkToken', authorizationMiddleware, (req, res) => {
-  // authentication
-  const user = db.users.find(user => user.id === req.user.userId);
-
-  // http response
-  if (user) {
-    console.log('<< 200', user.username);
-    res.json({ 
-      logged: true, 
-      pseudo: user.username,
-    });
-  }
-  else {
-    console.log('<< 401 UNAUTHORIZED');
-    res.sendStatus(401);
-  }
-});
-
-// Error middleware
-app.use((err, req, res, next) => {
-  if (err.name === 'UnauthorizedError') {
-    console.log('<< 401 UNAUTHORIZED - Invalid Token');
-    res.status(401).send('Invalid token');
-  }
-});
-
-/*
- * Server
+/** Express inclus, de base, un middleware 404 qui ressemble à quelque chose comme ça 
+ * le moteur de MW de express est fait de telle manière que le 404 soit TOUJOURS à la fin.
  */
-app.listen(port, () => {
-  console.log(`listening on *:${port}`);
+// app.use( (req, res) => {
+//     res.status(404).send(`Cannot ${req.method} ${req.url}`);
+// })
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`Server started, listening on ${PORT}`);
 });

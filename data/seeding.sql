@@ -26,8 +26,9 @@ INSERT INTO "game" (
 INSERT INTO "file" (
     "id",
     "name",
-    "path"
+    "path",
+    "game_id"
 ) VALUES
-(1, 'game1', 'game1.pdf'),
-(2, 'game2', 'game2.pdf'),
-(3, 'game3', 'game3.pdf');
+(1, 'game1', 'game1.pdf', 1),
+(2, 'game2', 'game2.pdf', 2),
+(3, 'game3', 'game3.pdf', 3);

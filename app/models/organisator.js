@@ -1,9 +1,9 @@
 const database = require('../database');
 const { Model, DataTypes } = require('sequelize');
 
-class User extends Model {};
+class Organisator extends Model {};
 
-User.init({
+Organisator.init({
     email: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -34,7 +34,7 @@ User.init({
     },
 }, {
     sequelize: database,
-    tableName: "user"
+    tableName: "organisator"
 });
 
-module.exports = User;
+module.exports = Organisator;

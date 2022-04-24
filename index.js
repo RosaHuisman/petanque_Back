@@ -6,12 +6,24 @@ const morgan = require('morgan');
 const cors = require('cors');
 const sanitizer = require('sanitizer');
 const multer = require('multer');
+const session = require('express-session');
+
+const bp = require('body-parser')
+
 
 const app = express();
 
 // '*' signifie "tout le monde peut passer"
 // ATTENNIO : c'est valable le temps du dev, mais il faudra mettre une valeur plus précise pour le passage en prod
 app.use( cors('*') );
+
+// cors
+/* app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
+    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+}); */
 
 app.use( morgan('dev') );
 
@@ -20,10 +32,17 @@ app.use( express.static('public') );
 
 
 // on oublie pas les MW pour les body !
-app.use(express.urlencoded({extended: true}));
-const bodyParser = multer();
+// app.use(express.urlencoded({extended: true}));
+
+app.use(session({
+  saveUninitialized: true,
+  resave: true,
+  secret: 'Un Super Secret'
+}));
+
+// const bodyParser = multer();
 // on utlise .none() pour dire qu'on attends pas de fichier, uniquement des inputs "classiques" !
-app.use( bodyParser.none() );
+// app.use( bodyParser.none() );
 
 // on assainit tout le body, avant de le passer au rouet
 app.use( (req, res, next) => {
@@ -34,6 +53,9 @@ app.use( (req, res, next) => {
     }
     next();
 });
+
+app.use(bp.json())
+app.use(bp.urlencoded({ extended: true }))
 
 app.use(router);
 

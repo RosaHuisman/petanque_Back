@@ -1,19 +1,20 @@
 const express = require('express');
 const gameController = require('./controllers/gameController');
-const fileController = require('./controllers/fileController');
-const userController = require('./controllers/userController');
+const organisatorController = require('./controllers/organisatorController');
+const authController = require('./controllers/authController');
 
 
 const router = express.Router();
 
 
-router.route('/game')
-    .get(gameController.getAll);
+router.route('/login')
+    .post(authController.login);
 
-router.route('/file')
-    .get(fileController.getAll);
+router.route('/game')
+    .get(gameController.getAll)
+    .post(gameController.create);
 
 router.route('/user')
-    .get(userController.getAll);
+    .get(organisatorController.getAll);
 
 module.exports = router;

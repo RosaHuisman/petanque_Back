@@ -11,11 +11,11 @@ Game.init({
             notEmpty: true
         }
     },
-    file_id: {
+    organisator_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'File',
+            model: 'Organisator',
             key: 'id'
         }
     }

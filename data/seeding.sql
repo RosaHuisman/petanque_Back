@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO "user" (
+INSERT INTO "organisator" (
   "id",
   "email",
   "password",
@@ -14,21 +14,5 @@ INSERT INTO "user" (
 (5, 'willy@campingbeaurivage.com', 'willy', 'Willy', 'Tamerti'),
 (6, 'animatie@campingbeaurivage.com', 'animatie', 'Animatie', 'animatie');
 
-INSERT INTO "game" (
-    "id",
-    "date",
-    "file_id"
-) VALUES
-(1, '2018-01-01', 1),
-(2, '2018-01-02', 2),
-(3, '2018-01-03', 3);
 
-INSERT INTO "file" (
-    "id",
-    "name",
-    "path",
-    "game_id"
-) VALUES
-(1, 'game1', 'game1.pdf', 1),
-(2, 'game2', 'game2.pdf', 2),
-(3, 'game3', 'game3.pdf', 3);
+COMMIT;

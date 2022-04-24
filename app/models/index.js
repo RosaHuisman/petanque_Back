@@ -1,38 +1,36 @@
 const Game = require('./game');
-const File = require('./file');
-const User = require('./user');
+const Organisator = require('./organisator');
+const Player = require('./player');
 
 /* Associations des models */
 
-// Game <> File
-/* File.hasOne(Game, {
-    foreignKey: 'file_id',
-    as: 'file'
-});  */
+// Association Game <-> Organisator
+Organisator.hasMany(Game, {
+    foreignKey: 'organisator_id',
+    as: 'games'
+});
 
-/* File.belongsTo(Game, {
+Game.belongsTo(Organisator, {
+    foreignKey: 'organisator_id',
+    as: 'organisator'
+});
+
+// Association Game <-> Player
+Game.hasMany(Player, {
+    foreignKey: 'game_id',
+    as: 'players'
+});
+
+Player.belongsTo(Game, {
     foreignKey: 'game_id',
     as: 'game'
-}); */
-
-// Game : "un File appartient à un Game"
-File.belongsTo(Game, {
-    foreignKey: "game_id",
-    as: "game"
 });
-
-// ...et la réciproque : "un Game possède un File"
-Game.belongsTo(File, {
-    foreignKey: "file_id",
-    as: "file"
-});
-
 
 
 
 module.exports = {
-    File,
+    Player,
     Game,
-    User
+    Organisator
 };
 

@@ -1,13 +1,14 @@
 BEGIN;
 
 DROP TABLE IF EXISTS 
-"user",
-"game";
+"organisator",
+"game",
+"player";
 
 -- -----------------------------------------------------
--- Table "user"
+-- Table "organisator"
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS "user" (
+CREATE TABLE IF NOT EXISTS "organisator" (
   "id" serial PRIMARY KEY,
   "email" text NOT NULL,
   "password" text NOT NULL,
@@ -23,18 +24,25 @@ CREATE TABLE IF NOT EXISTS "user" (
 CREATE TABLE IF NOT EXISTS "game" (
   "id" serial PRIMARY KEY,
   "date" date NOT NULL,
-  "file_id" integer NOT NULL,
   "createdAt" timestamp NOT NULL DEFAULT now(),
-  "updatedAt" timestamp NOT NULL DEFAULT now()
+  "updatedAt" timestamp NOT NULL DEFAULT now(),
+  "organisator_id" integer NOT NULL
 );
 
 -- -----------------------------------------------------
--- Table "file"
+-- Table "player"
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS "file" (
+CREATE TABLE IF NOT EXISTS "player" (
   "id" serial PRIMARY KEY,
   "name" text NOT NULL,
-  "path" text NOT NULL,
+  "winRounds" text,
+  "pointsRound1" integer NOT NULL,
+  "pointsRound2" integer NOT NULL,
+  "pointsRound3" integer NOT NULL,
+  "scoreRound1" integer NOT NULL,
+  "scoreRound2" integer NOT NULL,
+  "scoreRound3" integer NOT NULL,
+  "totalPoints" integer NOT NULL,
   "game_id" integer NOT NULL,
   "createdAt" timestamp NOT NULL DEFAULT now(),
   "updatedAt" timestamp NOT NULL DEFAULT now()

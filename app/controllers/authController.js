@@ -1,8 +1,67 @@
-const { userDataMapper } = require('../dataMappers');
+
+const { Organisator } = require('../models');
+const bcrypt = require('bcrypt');
+const jwtSecret = process.env.SECRET_KEY;
+
+
 
 const jsonwebtoken = require('jsonwebtoken');
 
 const authController = {
+
+    login: async (req, res) => {
+        try {
+          // on tente de récupérer l'organisateur qui possède l'email donné
+          const organisator = await Organisator.findOne({
+            where: {
+              email: req.body.email
+            }
+          });
+          if (!organisator) {
+            return res.render('login', {
+              error: "Cet email n'existe pas."
+            });
+          }
+
+          if (organisator) {
+
+            // we create a jsonwebtoken in order to send information to the client
+            const jwtContent = { firstName:organisator.firstname, lastName:organisator.lastname };
+
+            // we pick the algorithm and the duration
+            const jwtOptions = {
+                algorithm: 'HS256',
+                expiresIn: '3h'
+            };
+
+            // we send a token with the information that the client needs
+            res.status(200).json({
+                logged: true,
+                email: organisator.email,
+                firstName: organisator.firstname,
+                lastName: organisator.lastname,
+                id: organisator.id,
+                token: jsonwebtoken.sign(jwtContent, jwtSecret, jwtOptions),
+            });
+        };
+    
+          // Si on a un utilisateur, on teste si le mot de passe est valide
+          /* const validPwd = await bcrypt.compare(req.body.password, user.password);
+          if (!validPwd) {
+            return res.render('login', {
+              error: "Ce n'est pas le bon mot de passe."
+            });
+          } */
+
+          // on repart sur la page d'accueil
+          //return res.redirect('/');
+    
+        } catch (err) {
+          console.log('erreur');
+          console.trace(err);
+          res.status(500).send(err);
+        }
+      },
 
     /**
      * 

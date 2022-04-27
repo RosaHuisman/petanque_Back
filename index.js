@@ -15,15 +15,15 @@ const app = express();
 
 // '*' signifie "tout le monde peut passer"
 // ATTENNIO : c'est valable le temps du dev, mais il faudra mettre une valeur plus précise pour le passage en prod
-app.use( cors('*') );
+//app.use( cors('*') );
 
 // cors
-/* app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'https://petanque-beau-rivage.netlify.app/');
     res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization');
     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-}); */
+});
 
 app.use( morgan('dev') );
 

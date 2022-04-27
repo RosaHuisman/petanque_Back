@@ -15,7 +15,8 @@ const app = express();
 
 // '*' signifie "tout le monde peut passer"
 // ATTENNION : c'est valable le temps du dev, mais il faudra mettre une valeur plus précise pour le passage en prod
-app.use( cors('*') );
+//app.use( cors('*') );
+app.use(cors());
 
 // cors
 /* app.use((req, res, next) => {

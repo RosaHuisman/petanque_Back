@@ -12,7 +12,7 @@ const organisatorController = {
     getAll: async (req, res, next) => {
         try {
             const organisators = await Organisator.findAll();
-
+            console.log(organisators);
             res.json(organisators);
                         
         } catch (error) {

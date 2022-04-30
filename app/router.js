@@ -6,6 +6,9 @@ const authController = require('./controllers/authController');
 
 const router = express.Router();
 
+router.get('/', (req, res) => {
+    res.send('Hello World!');
+});
 
 router.route('/login')
     .post(authController.login);
@@ -14,7 +17,7 @@ router.route('/game')
     .get(gameController.getAll)
     .post(gameController.create);
 
-router.route('/user')
+router.route('/organisator')
     .get(organisatorController.getAll);
 
 module.exports = router;

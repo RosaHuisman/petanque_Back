@@ -7,7 +7,7 @@ const authController = require('./controllers/authController');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    res.send('Hello World!');
+    res.send('Hello, welcome on Backend');
 });
 
 router.route('/login')

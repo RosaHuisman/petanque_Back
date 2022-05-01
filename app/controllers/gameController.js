@@ -1,4 +1,3 @@
-const sequelize = require('../database');
 const { Game, Player } = require('../models');
 
 const gameController = {

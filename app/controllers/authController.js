@@ -1,4 +1,3 @@
-const sequelize = require('../database');
 
 const { Organisator } = require('../models');
 const bcrypt = require('bcrypt');

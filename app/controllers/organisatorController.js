@@ -1,4 +1,3 @@
-const sequelize = require('../database');
 
 const bcrypt = require('bcrypt');
 const emailValidator = require('email-validator');

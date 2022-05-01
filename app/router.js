@@ -1,3 +1,5 @@
+const sequelize = require('../database');
+
 const express = require('express');
 const gameController = require('./controllers/gameController');
 const organisatorController = require('./controllers/organisatorController');

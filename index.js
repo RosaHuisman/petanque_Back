@@ -40,17 +40,17 @@ app.use( express.static('public') );
 
 
 // on oublie pas les MW pour les body !
-// app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({extended: true}));
 
-app.use(session({
+/* app.use(session({
   saveUninitialized: true,
   resave: true,
   secret: 'Un Super Secret'
-}));
+})); */
 
-// const bodyParser = multer();
+const bodyParser = multer();
 // on utlise .none() pour dire qu'on attends pas de fichier, uniquement des inputs "classiques" !
-// app.use( bodyParser.none() );
+app.use( bodyParser.none() );
 
 // on assainit tout le body, avant de le passer au rouet
 app.use( (req, res, next) => {
@@ -62,8 +62,8 @@ app.use( (req, res, next) => {
     next();
 });
 
-app.use(bp.json())
-app.use(bp.urlencoded({ extended: true }))
+//app.use(bp.json())
+//app.use(bp.urlencoded({ extended: true }))
 
 app.use(router);
 

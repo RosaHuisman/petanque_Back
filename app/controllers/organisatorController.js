@@ -1,4 +1,6 @@
 
+const sequelize = require('../database');
+
 const bcrypt = require('bcrypt');
 const emailValidator = require('email-validator');
 const jsonwebtoken = require('jsonwebtoken');
@@ -10,12 +12,14 @@ const { Organisator } = require('../models');
 const organisatorController = {
 
     getAll: async (req, res, next) => {
+        console.log('organisator', Organisator);
         try {
             const organisators = await Organisator.findAll();
             console.log(organisators);
             res.json(organisators);
                         
         } catch (error) {
+            console.log('coucou je suis ton erreur');
             console.trace(error);
             res.status(500).json(error);
         }

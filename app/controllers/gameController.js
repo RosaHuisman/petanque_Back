@@ -9,9 +9,6 @@ const gameController = {
 
             console.log('getAll');
             const games = await Game.findAll({
-                include: [{
-                    association: 'file',
-                }]
             });
 
             res.json(games);

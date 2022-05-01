@@ -4,13 +4,12 @@ const { Organisator } = require('../models');
 const bcrypt = require('bcrypt');
 const jwtSecret = process.env.SECRET_KEY;
 
-
-
 const jsonwebtoken = require('jsonwebtoken');
 
 const authController = {
 
     login: async (req, res) => {
+        console.log('body', req.body);
         try {
           // on tente de récupérer l'organisateur qui possède l'email donné
           const organisator = await Organisator.findOne({
@@ -71,6 +70,8 @@ const authController = {
      * @returns 
      */
     async checkToken(request, response) {
+
+      console.log('checkToken');
 
         const authHeader = request.headers['authorization'];
 

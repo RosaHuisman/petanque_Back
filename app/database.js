@@ -1,6 +1,6 @@
+// ON PROD SERVER : 
 const { Sequelize } = require('sequelize');
 
-console.log('.env', process.env.DATABASE_URL);
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
     "dialect": "postgres",
     "dialectOptions": {
@@ -11,4 +11,14 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
     }
 });
 
-module.exports = sequelize;
+module.exports = sequelize; 
+
+// ON LOCAL SERVER :
+
+/* const { Sequelize } = require('sequelize');
+
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+    
+});
+
+module.exports = sequelize;  */

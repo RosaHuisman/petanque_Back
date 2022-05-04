@@ -9,7 +9,6 @@ const jsonwebtoken = require('jsonwebtoken');
 const authController = {
 
     login: async (req, res) => {
-        console.log('body', req.body);
         try {
           // on tente de récupérer l'organisateur qui possède l'email donné
           const organisator = await Organisator.findOne({
@@ -57,7 +56,6 @@ const authController = {
           //return res.redirect('/');
     
         } catch (err) {
-          console.log('erreur');
           console.trace(err);
           res.status(500).send(err);
         }
@@ -70,8 +68,6 @@ const authController = {
      * @returns 
      */
     async checkToken(request, response) {
-
-      console.log('checkToken');
 
         const authHeader = request.headers['authorization'];
 

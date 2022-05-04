@@ -6,10 +6,16 @@ const gameController = {
 
     getAll: async (req, res, next) => {
         try {
-
-            console.log('getAll');
             const games = await Game.findAll({
+                 include: [{
+                    model: Player,
+                    as: 'players',
+                    association: 'players',
+                }],
+                order: [['createdAt', 'DESC']],
             });
+
+            console.log(games);
 
             res.json(games);
                         
@@ -21,7 +27,6 @@ const gameController = {
 
     create: async (req, res, next) => {
         try {
-            console.log('create');
             const game = await Game.create(req.body.game);
             if(!game) {
                 return next;

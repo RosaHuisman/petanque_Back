@@ -15,8 +15,6 @@ const gameController = {
                 order: [['createdAt', 'DESC']],
             });
 
-            console.log(games);
-
             res.json(games);
                         
         } catch (error) {
@@ -31,12 +29,10 @@ const gameController = {
             if(!game) {
                 return next;
             }
-            const players = await Player.findAll();
             const gameId = game.id;
             if(req.body.players && req.body.players.length > 0) {
                 for (const player of req.body.players) {
                     player.game_id = gameId;
-                    player.id = player.id + players.length;
                     await Player.create(player)
                 }
             }

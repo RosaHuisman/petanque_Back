@@ -10,10 +10,9 @@ DROP TABLE IF EXISTS
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS "organisator" (
   "id" serial PRIMARY KEY,
-  "email" text NOT NULL,
-  "password" text NOT NULL,
   "firstname" text NULL,
   "lastname" text NULL,
+  "password" text NOT NULL,
   "createdAt" timestamp NOT NULL DEFAULT now(),
   "updatedAt" timestamp NOT NULL DEFAULT now()
 );

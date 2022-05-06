@@ -13,16 +13,24 @@ const authController = {
           // on tente de récupérer l'organisateur qui possède l'email donné
           const organisator = await Organisator.findOne({
             where: {
-              email: req.body.email
+              firstname: req.body.firstName
             }
           });
           if (!organisator) {
             return res.render('login', {
-              error: "Cet email n'existe pas."
+              error: "Cet organisateur n'existe pas."
             });
           }
 
-          if (organisator) {
+          if (organisator) {            
+
+            // Si on a un utilisateur, on teste si le mot de passe est valide
+            const validPwd = await bcrypt.compareSync(req.body.password, organisator.password);
+            if (!validPwd) {
+              return res.render('login', {
+                error: "Ce n'est pas le bon mot de passe."
+              });
+            }
 
             // we create a jsonwebtoken in order to send information to the client
             const jwtContent = { firstName:organisator.firstname, lastName:organisator.lastname };
@@ -36,24 +44,15 @@ const authController = {
             // we send a token with the information that the client needs
             res.status(200).json({
                 logged: true,
-                email: organisator.email,
                 firstName: organisator.firstname,
                 lastName: organisator.lastname,
                 id: organisator.id,
                 token: jsonwebtoken.sign(jwtContent, jwtSecret, jwtOptions),
             });
-        };
-    
-          // Si on a un utilisateur, on teste si le mot de passe est valide
-          /* const validPwd = await bcrypt.compare(req.body.password, user.password);
-          if (!validPwd) {
-            return res.render('login', {
-              error: "Ce n'est pas le bon mot de passe."
-            });
-          } */
-
-          // on repart sur la page d'accueil
-          //return res.redirect('/');
+        } else {
+          // if the bcrypt password comparison is incorrect, we send an error message
+          response.status(401).json({ error: "Mot de passe incorrect" });
+      };
     
         } catch (err) {
           console.trace(err);

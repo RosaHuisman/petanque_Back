@@ -15,10 +15,10 @@ module.exports = sequelize;
 
 // ON LOCAL SERVER :
 
-/* const { Sequelize } = require('sequelize');
+ /* const { Sequelize } = require('sequelize');
 
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
     
 });
 
-module.exports = sequelize;  */
+module.exports = sequelize;   */

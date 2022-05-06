@@ -4,20 +4,6 @@ const { Model, DataTypes } = require('sequelize');
 class Organisator extends Model {};
 
 Organisator.init({
-    email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        }
-    },
-    password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        }
-    },
     firstname: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -26,6 +12,13 @@ Organisator.init({
         }
     },
     lastname: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    },
+    password: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {

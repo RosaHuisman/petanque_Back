@@ -36,8 +36,11 @@ const gameController = {
                     await Player.create(player)
                 }
             }
-
-            res.json(game);
+            // return game and succes message
+            res.json({
+                game,
+                message: 'Partie enregistrée avec succès',
+            });
         } catch (error) {
             console.trace(error);
             res.status(500).json(error);
